@@ -1,0 +1,134 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- ─── Storage Permissions ──────────────────────────────────────────── -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+
+    <!-- ─── Media Permissions (Android 13+) ─────────────────────────────── -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"/>
+
+    <!-- ─── Background & WorkManager ────────────────────────────────────── -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+
+    <!-- ─── Notifications (Android 13+) ─────────────────────────────────── -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <!-- ─── Network (WorkManager needs this internally) ─────────────────── -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <!-- ─── Vibration (for notifications) ───────────────────────────────── -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <application
+        android:label="Statusly"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher"
+        android:requestLegacyExternalStorage="true"
+        android:allowBackup="true"
+        android:fullBackupContent="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme"/>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!-- ─── WorkManager Boot Receiver ───────────────────────────────── -->
+        <receiver
+            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+            android:exported="false"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.REBOOT"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- ─── WorkManager Foreground Service ──────────────────────────── -->
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false"/>
+
+        <!-- ─── Flutter Embedding ────────────────────────────────────────── -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2"/>
+
+    </application>
+
+    <!-- ─── Queries (all WhatsApp variants + system intents) ────────────── -->
+    <queries>
+        <!-- Official -->
+        <package android:name="com.whatsapp"/>
+        <package android:name="com.whatsapp.w4b"/>
+        <!-- GB WhatsApp -->
+        <package android:name="com.gbwhatsapp"/>
+        <package android:name="com.gbwhatsapp.pro"/>
+        <!-- FM WhatsApp -->
+        <package android:name="com.fmwhatsapp"/>
+        <!-- OG WhatsApp -->
+        <package android:name="com.ogwhatsapp"/>
+        <!-- YO WhatsApp -->
+        <package android:name="com.yowhatsapp"/>
+        <!-- WhatsApp Plus -->
+        <package android:name="com.whatsapp.plus"/>
+        <!-- Aero WhatsApp -->
+        <package android:name="com.whatsapp.aero"/>
+        <!-- Delta WhatsApp -->
+        <package android:name="com.delta.whatsapp"/>
+        <!-- Fouad WhatsApp -->
+        <package android:name="com.fouad.whatsapp"/>
+        <!-- MA WhatsApp -->
+        <package android:name="com.mawhatsapp"/>
+        <!-- NS WhatsApp -->
+        <package android:name="com.nswhatsapp"/>
+        <!-- Blue WhatsApp Plus -->
+        <package android:name="com.whatsapp.blue"/>
+        <!-- Whatsapp Prime -->
+        <package android:name="com.whatsapp.prime"/>
+
+        <!-- System intents -->
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:mimeType="video/*"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:mimeType="image/*"/>
+        </intent>
+    </queries>
+
+</manifest>
